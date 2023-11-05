@@ -404,8 +404,6 @@ namespace R5T.L0063.F000
 
                             isInGenericList = true;
                         }
-
-                        continue;
                     }
 
                     if (character == Instances.TokenSeparators.GenericTypeListCloseTokenSeparator)
@@ -418,7 +416,9 @@ namespace R5T.L0063.F000
 
                             yield return new Range(
                                 indexOfStart,
-                                indexOfEnd);
+                                indexOfEnd + 1);
+
+                            isInGenericList = false;
                         }
                     }
 
@@ -426,8 +426,43 @@ namespace R5T.L0063.F000
                 }
             }
 
-            var output = Internal(signatureString)
+            var ranges = Internal(signatureString)
                 .ToArray();
+
+            // Post-processing.
+            var output = ranges
+                .Where(range =>
+                {
+                    // Even if the generic type list open token is found, if it found at the start of the typed signature string,
+                    // or immediately following a namespace token separator or nested type token separator, then it is part of a compiler generated name.
+                    var isFirst = Instances.IndexOperator.Is_First(range.Start.Value);
+                    if (isFirst)
+                    {
+                        // We have a compiler-generated type name like <>c__DisplayClass0_0.
+                        return false;
+                    }
+                    else
+                    {
+                        var precedingCharacter = Instances.StringOperator.Get_Character(
+                            signatureString,
+                            range.Start.Value - 1);
+
+                        var precedingCharacterIsNameTokenSeparator = false
+                            || Instances.TokenSeparators.NestedTypeNameTokenSeparator == precedingCharacter
+                            || Instances.TokenSeparators.NamespaceTokenSeparator == precedingCharacter
+                            ;
+
+                        if (precedingCharacterIsNameTokenSeparator)
+                        {
+                            // If the preceding character is a name token separator, then we have one of the compiler generated type names like "D8S.C0002.Deploy.IOperations+<>c__DisplayClass0_0".
+                            return false;
+                        }
+
+                        // Else, true.
+                        return true;
+                    }
+                })
+                .Now();
 
             return output;
         }
@@ -730,11 +765,8 @@ namespace R5T.L0063.F000
 
         public string Get_TypesListValue_FromTypesList(string typesList)
         {
-            var output = typesList
-                .TrimStart(Instances.TokenSeparators.GenericTypeListOpenTokenSeparator)
-                .TrimEnd(Instances.TokenSeparators.GenericTypeListCloseTokenSeparator)
-                ;
-
+            // Remove the first and last characters.
+            var output = typesList[1..^1];
             return output;
         }
 
@@ -768,9 +800,27 @@ namespace R5T.L0063.F000
         }
 
         /// <summary>
+        /// Does the type have a generic inputs list? (Does it contain the <see cref="Z000.ITokenSeparators.TypeArgumentListOpenTokenSeparator"/>,
+        /// following text, instead of following a namespace token separator like for compiler generated names?)
+        /// </summary>
+        /// <remarks>
+        /// This function can handle compiler-generated names like "T:D8S.C0002.Deploy.IOperations+&lt;&gt;c__DisplayClass0_0".
+        /// </remarks>
+        public bool Has_GenericInputsList(string typedSignatureString)
+        {
+            var genericInputListRanges = this.Get_GenericInputListRanges(typedSignatureString);
+
+            var output = genericInputListRanges.Any();
+            return output;
+        }
+
+        /// <summary>
         /// Does the type have a generic inputs list? (Does it contain the <see cref="Z000.ITokenSeparators.TypeArgumentListOpenTokenSeparator"/>.)
         /// </summary>
-        public bool Has_GenericInputsList(string typedSignatureString)
+        /// <remarks>
+        /// This function will fail for compiler-generated names like "T:D8S.C0002.Deploy.IOperations+&lt;&gt;c__DisplayClass0_0".
+        /// </remarks>
+        public bool Has_GenericInputsList_Simple(string typedSignatureString)
         {
             var output = Instances.StringOperator.Contains(
                 typedSignatureString,
