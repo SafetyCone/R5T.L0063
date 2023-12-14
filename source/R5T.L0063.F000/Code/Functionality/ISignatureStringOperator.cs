@@ -726,10 +726,7 @@ namespace R5T.L0063.F000
 
         public string Get_SignatureStringValue(string signatureString)
         {
-            var output = Instances.StringOperator.Get_Substring_From_Exclusive(
-                Instances.TokenSeparators.KindMarkerTokenSeparator,
-                signatureString);
-
+            var output = Instances.KindMarkerOperator.Remove_TypeKindMarker(signatureString);
             return output;
         }
 
