@@ -754,6 +754,9 @@ namespace R5T.L0063.F000
             return output;
         }
 
+        /// <summary>
+        /// Prefixes the identity string with the type kind-marker value to get a type signature string.
+        /// </summary>
         public string Get_TypeSignatureString(string identityStringValue)
         {
             var output = Instances.KindMarkerOperator.Make_TypeKindMarked(identityStringValue);
