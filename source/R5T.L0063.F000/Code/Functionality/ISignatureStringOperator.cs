@@ -8,6 +8,9 @@ using R5T.T0132;
 
 namespace R5T.L0063.F000
 {
+    /// <summary>
+    /// Basic signature string operators.
+    /// </summary>
     [FunctionalityMarker]
     public partial interface ISignatureStringOperator : IFunctionalityMarker
     {
