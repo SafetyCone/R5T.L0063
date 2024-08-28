@@ -917,7 +917,7 @@ namespace R5T.L0063.F000
         }
 
         /// <summary>
-        /// Does the type signature start with the method type parameter prefix, <inheritdoc cref="Z000.ITypeNameAffixes.MethodTypeParameterMarker_Prefix" path="/descendant::name"/>.
+        /// Does the type signature start with the method type parameter prefix, <inheritdoc cref="Z000.ITypeNameAffixes.MethodTypeParameterMarker_Prefix" path="descendant::name"/>.
         /// </summary>
         public bool Is_GenericMethodParameterTypeName(string typeSignatureStringValue)
         {
@@ -929,7 +929,7 @@ namespace R5T.L0063.F000
         }
 
         /// <summary>
-        /// Does the type signature start with the type parameter prefix, <inheritdoc cref="Z000.ITypeNameAffixes.TypeParameterMarker_Prefix" path="/descendant::name"/>.
+        /// Does the type signature start with the type parameter prefix, <inheritdoc cref="Z000.ITypeNameAffixes.TypeParameterMarker_Prefix" path="descendant::name"/>.
         /// </summary>
         public bool Is_GenericTypeParameterTypeName(string typeSignatureStringValue)
         {
