@@ -12,7 +12,7 @@ namespace R5T.L0063.Z000
     public partial interface ITypeNameAffixes : IValuesMarker
     {
         /// <summary>
-        /// <para><name>"``" (two back-ticks)</name></para>
+        /// <para><name>"<value>``</value>" (two back-ticks)</name></para>
         /// </summary>
         public const string MethodTypeParameterMarker_Prefix_Constant = "``";
 
@@ -20,7 +20,7 @@ namespace R5T.L0063.Z000
         public string MethodTypeParameterMarker_Prefix => MethodTypeParameterMarker_Prefix_Constant;
 
         /// <summary>
-        /// <para><name>'`' (back-tick)</name></para>
+        /// <para><name>'<value>`</value>' (back-tick)</name></para>
         /// </summary>
         public const char TypeParameterMarker_Prefix_Constant = '`';
 
