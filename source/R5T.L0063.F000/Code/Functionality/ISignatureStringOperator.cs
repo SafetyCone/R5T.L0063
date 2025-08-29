@@ -530,7 +530,7 @@ namespace R5T.L0063.F000
 
             var firstTypeNamePart = typedSignatureStringParts[indexOfFirstTypeNamePart];
 
-            var tokensForFirst = Instances.StringOperator.Split(
+            var tokensForFirst = Instances.StringOperator.Split_OnCharacter(
                 Instances.TokenSeparators.GenericTypeListOpenTokenSeparator,
                 firstTypeNamePart);
 
@@ -538,7 +538,7 @@ namespace R5T.L0063.F000
 
             var lastTypeNamePart = typedSignatureStringParts.Get_Last();
 
-            var tokensForLast = Instances.StringOperator.Split(
+            var tokensForLast = Instances.StringOperator.Split_OnCharacter(
                 Instances.TokenSeparators.GenericTypeListCloseTokenSeparator,
                 lastTypeNamePart);
 
@@ -561,14 +561,14 @@ namespace R5T.L0063.F000
         public string Get_GenericTypeParameterTypeName(string typeSignatureStringValue)
         {
             // Remove the first character, which is the generic type parameter prefix.
-            var output = typeSignatureStringValue.Except_First();
+            var output = Instances.StringOperator.Except_First(typeSignatureStringValue);
             return output;
         }
 
         public string Get_GenericMethodParameterTypeName(string typeSignatureStringValue)
         {
             // Remove the first two characters, which are the generic method type parameter prefix.
-            var output = typeSignatureStringValue.Except_FirstTwo();
+            var output = Instances.StringOperator.Except_FirstTwo(typeSignatureStringValue);
             return output;
         }
 
@@ -711,7 +711,7 @@ namespace R5T.L0063.F000
         /// </summary>
         public (string signatureStringPart, string outputTypeName) Get_OutputTypeParts(string signatureString)
         {
-            var tokens = Instances.StringOperator.Split(
+            var tokens = Instances.StringOperator.Split_OnCharacter(
                 Instances.TokenSeparators.OutputTypeTokenSeparator,
                 signatureString);
 
@@ -782,7 +782,7 @@ namespace R5T.L0063.F000
 
             var firstTypeNamePart = typedSignatureStringParts[indexOfFirstTypeNamePart];
 
-            var tokens = Instances.StringOperator.Split(
+            var tokens = Instances.StringOperator.Split_OnCharacter(
                 Instances.TokenSeparators.GenericTypeListOpenTokenSeparator,
                 firstTypeNamePart);
 
@@ -942,7 +942,7 @@ namespace R5T.L0063.F000
             }
 
             var firstCharacter = typeSignatureStringValue.First();
-            var secondCharacter = typeSignatureStringValue.Second();
+            var secondCharacter = Instances.EnumerableOperator.Get_Second(typeSignatureStringValue);
 
             var output = true
                 && firstCharacter == Instances.TypeNameAffixes.TypeParameterMarker_Prefix
