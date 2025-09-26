@@ -611,7 +611,7 @@ namespace R5T.L0063.F000
                 Instances.TokenSeparators.NamespaceTokenSeparator,
                 signatureStringPart);
 
-            var output = Instances.StringOperator.Split(
+            var output = Instances.StringOperator.Split_OnIndex(
                 indexOfLastNamespaceTokenSeparator,
                 signatureStringPart);
 
